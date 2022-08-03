@@ -1,0 +1,29 @@
+
+discovered = set
+queue = []
+
+queue append state
+discovered add state
+total visited state = 0
+
+prev = {} # prev move
+actions = {} # sequnce of actions
+
+while queue not empty
+    nextState = queue.pop
+    for tuples in get_successors(nextState)
+        state = tuples[1]
+        if state isnt discovered
+            total visisted state add 1
+            discovered add state
+            queue add state
+            prev[state] = nextState 
+            if state exists in actions
+                action[state] = action.get(state) + tuples[0]
+            else:
+                action[state] = [tuples[0]]
+            
+            if (goal_test(state)):
+                return total visiited states
+            
+
