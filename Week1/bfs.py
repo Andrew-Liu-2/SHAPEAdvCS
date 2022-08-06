@@ -1,3 +1,46 @@
+# graphs 
+# vertices and edges
+
+# directed = one way
+# undirected = both ways
+
+# there can be weight on the edges 
+# ex. how much it costs to travel to one node 
+
+
+# path - sequence of vertices between two vertices
+# sich that there is an edge between each vertices
+
+
+# connectedness 
+# a graph is connected if there is some path between
+# any pair of verties
+
+# directed graphs: weak and strong connectivity
+# weak: if you ignore the direction, it is connected
+# strong: considering the direction, you are still able to reach any node
+
+
+# a graph contains a cycle if you can get back from the vertex you are on
+
+# directed acyclic (DAG) - a directed graph without cycles
+
+
+# Graph Algorritism
+
+# Topological Sort (Directed Acyclic)
+    # if there is a path between s and t in the graph, then S must 
+    # appear before t in the topoligical sort
+
+    # Step 1: comput the in degree (number of edges that point to the vertex) of each v ertex
+    # Step 2: use a queue and enqueue all vertices with in-degree 0 
+    # while the queeu is not empty, get the next vertex s , add s to the ouput
+    # for all neighbors of s, t.indegree -= 1
+    # if t.indegree ==0, enqueue t
+
+# Graph Implementation
+
+
 def bfs(graph,source):
     discovered = set()
     queue = []
