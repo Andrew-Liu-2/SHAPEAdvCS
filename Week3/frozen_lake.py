@@ -1,3 +1,4 @@
+import math
 import random
 import sys
 
@@ -166,6 +167,28 @@ class FrozenLake(object):
         return 0.0 # TODO
     
     def value_iteration(self, epsilon = 0.001):
+        util = self.get_initial_utility_function()
+        for x in range(self.width): 
+            for y in range(self.height): 
+                value = util[(x,y)]
+                newValue = 99999999
+                while(abs(newValue - value) > (epsilon * ((1-self.gamma) / self.gamma))):
+                    value = newValue
+                    allActions = ['n','e','s','w']
+                    maxValue = 0
+                    #maxAction = ''
+                    
+                    for action in allActions:
+                        transitions = self.get_transitions((x,y),action)
+                        value = 0
+                        for transition in transitions:
+                            value += (util[transition[0]] * transition[1])
+                        if(value > maxValue):
+                            maxValue = value
+                            #maxAction = action
+                    newValue = self.get_reward((x,y)) + maxValue
+                util[x,y] = newValue
+        return util
         """
         The value iteration algorithm to iteratively compute an optimal
         utility function.
@@ -184,9 +207,9 @@ if __name__ == "__main__":
     # Create a lake simulation 
     lake = FrozenLake(width=8,height=8, targets=[(3,4)], blocked = [(3,3),(2,3),(2,4), ], holes=[(4,0),(4,1),(3,0),(3,1), (6,4),(6,5),(0,7),(0,6),(1,7)], start=(0,0))
     policy = lake.get_random_policy()
-    print(lake.evaluate_policy(policy))
+    # print(lake.evaluate_policy(policy))
+    (lake.value_iteration(0.001))
     lake.print_map(policy)
-    2
     
 
     
