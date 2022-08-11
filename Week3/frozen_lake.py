@@ -167,17 +167,28 @@ class FrozenLake(object):
         return 0.0 # TODO
     
     def value_iteration(self, epsilon = 0.001):
+
+        def expectedValue(self,currState,action,prevUtilx,y):
+            transitions = self.get_transitions((x,y),action)
+
+
         util = self.get_initial_utility_function()
-        for x in range(self.width): 
-            for y in range(self.height): 
-                value = util[(x,y)]
-                newValue = 99999999
-                while(abs(newValue - value) > (epsilon * ((1-self.gamma) / self.gamma))):
+        new_util = self.get_initial_utility_function()
+
+        terminated = False
+        while not terminated:
+
+            terminated = True
+            for x in range(self.width): 
+                for y in range(self.height): 
+                    value = util[(x,y)]
+                    newValue = new_util[(x,y)]
+                    
+                    
                     value = newValue
                     allActions = ['n','e','s','w']
                     maxValue = 0
-                    #maxAction = ''
-                    
+
                     for action in allActions:
                         transitions = self.get_transitions((x,y),action)
                         value = 0
@@ -185,9 +196,13 @@ class FrozenLake(object):
                             value += (util[transition[0]] * transition[1])
                         if(value > maxValue):
                             maxValue = value
-                            #maxAction = action
                     newValue = self.get_reward((x,y)) + maxValue
-                util[x,y] = newValue
+                    new_util[x,y] = newValue
+
+                    if(abs(newValue - value) > (epsilon * ((1-self.gamma) / self.gamma))):
+                        print(abs(newValue - value),(epsilon * ((1-self.gamma) / self.gamma)))
+                        terminated = False
+            util = new_util 
         return util
         """
         The value iteration algorithm to iteratively compute an optimal
@@ -197,7 +212,7 @@ class FrozenLake(object):
 
     def extract_policy(self, utility_function):
         """
-        Given a utility function, return the best policy. 
+        Given a utility function, return the best policy.4 
         """
         return {} # 
 
@@ -208,7 +223,7 @@ if __name__ == "__main__":
     lake = FrozenLake(width=8,height=8, targets=[(3,4)], blocked = [(3,3),(2,3),(2,4), ], holes=[(4,0),(4,1),(3,0),(3,1), (6,4),(6,5),(0,7),(0,6),(1,7)], start=(0,0))
     policy = lake.get_random_policy()
     # print(lake.evaluate_policy(policy))
-    (lake.value_iteration(0.001))
+    print(lake.value_iteration(0.001))
     lake.print_map(policy)
     
 
